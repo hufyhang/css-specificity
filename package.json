@@ -1,0 +1,21 @@
+{
+  "name": "css-specificity",
+  "version": "0.0.1",
+  "description": "A CSS specificity calculator",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "CSS",
+    "specificity",
+    "CSS",
+    "specificity"
+  ],
+  "author": "Feifei Hang <l.daniel.hung@gmail.com> (http://feifeihang.github.io/)",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^2.3.4",
+    "should": "^7.1.1"
+  }
+}
