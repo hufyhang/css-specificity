@@ -30,7 +30,7 @@
   /**
    * Calculate specificity of a CSS selector.
    * @param  {string} selector A CSS selector to be calculated.
-   * @return {number}          CSS specificity value.
+   * @return {Array}          CSS specificity value. E.g.: [0, 1, 2, 6]
    */
   function calculate (selector) {
     // If `selector` is not a string, throw an error.
@@ -40,13 +40,13 @@
     }
 
     // The final specificity.
-    var result = 0;
+    var result = [0, 0, 0, 0]; // Consider this as: [0,0,0,0] ==> 0000
     var processed;
     // First off, iterate through pseudo elements. E.g.: :first-line, ::first-letter.
     PSEUDO_ELEMENTS.map(function (item) {
       processed = search(':{1,2}' + item, selector);
       // Each pseudo element worth 1 point.
-      result += processed.length;
+      result[3] += processed.length;
       // Update `selector` string.
       selector = processed.selector;
     });
@@ -54,26 +54,26 @@
     // Secondly, find all pseudo classes. E.g.: :hover, :nth-child(XXX).
     processed = search(':\\w+(\\-\\w+(\\(.*?\\))?)?', selector);
     // Each pseudo class worth 10 points.
-    result += 10 * processed.length;
+    result[2] += processed.length;
     // Update `selector` string.
     selector = processed.selector;
 
     // Thirdly, find all attributes. E.g.: [id="anId"], [required]
     processed = search('\\[.+?\\]', selector);
     // Each attribute worth 10 points.
-    result += 10 * processed.length;
+    result[2] += processed.length;
     selector = processed.selector;
 
     // Find all IDs. E.g.: #id, #this_is_an_id, #a-id.
     processed = search('#\\w+([_-]\\w+)?', selector);
     // Each ID worth 100 points.
-    result += 100 * processed.length;
+    result[1] += processed.length;
     selector = processed.selector;
 
     // Find all classes. E.g.: .cls, .push-btn.
     processed = search('\\.\\w+([_-]\\w+)?', selector);
     // Each class worth 10 points.
-    result += 10 * processed.length;
+    result[2] += processed.length;
     selector = processed.selector;
 
     // Find all elements. E.g.: a, li, a-element, *.
@@ -84,10 +84,9 @@
     selector = selector.replace(/[\ ]{2,}/g, ' ');
     processed = search('[\\*\\w]+(\\-*\\w*)?', selector);
     // Each element worth 1 point.
-    result += processed.length;
+    result[3] += processed.length;
 
     return result;
-
   }
 
   // Now, export `calculate`.
