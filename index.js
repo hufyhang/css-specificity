@@ -92,5 +92,6 @@
   // Now, export `calculate`.
   exports.calc = calculate;
 
-// If `exports` is available, then use it. Otherwise, export to `window.cssSpecificity`.
-})(typeof exports !== 'undefined' ? exports : window.cssSpecificity);
+// If `exports` is unavailable, export to `window.cssSpecificity.
+// Otherwise, just use `exports`.
+})(typeof exports === 'undefined'? this['cssSpecificity']={}: exports);
